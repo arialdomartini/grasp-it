@@ -1,3 +1,2 @@
 language: csharp
-script:
-  - ./build.sh
+solution: src/GraspIt.sln
