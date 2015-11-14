@@ -9,7 +9,7 @@ namespace GraspIt.Test
         [Test]
         public void ShouldPass()
         {
-            new MyClass().DoSomething().Should().BeFalse();
+            new MyClass().DoSomething().Should().BeTrue();
         }
     }
 }
