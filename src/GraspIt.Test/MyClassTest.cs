@@ -1,5 +1,4 @@
-﻿using GraspIt;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +7,15 @@ using System.Linq.Expressions;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System;
+using System.Linq;
+using System;
+using System.Runtime.Remoting.Messaging;
 
 namespace GraspIt.Test
 {
     public class MyClassTest
     {
-        [Test]
-        public void ShouldEvaluate()
+        public void ShouldAssignMarksToStudents()
         {
             var john = new Student("John", "Capioca", "johnc");
             var mario = new Student("Mario", "Esposito", "marioe");
@@ -38,31 +39,50 @@ namespace GraspIt.Test
         }
     }
 
+
+    class Logger
+    {
+        public void Error(string message, Exception e)
+        {
+            Console.WriteLine(string.Format("{0}, {1} {2}", message, e.Message, e.StackTrace.ToString()));
+        }
+    }
+
     public class GradeEvaluator
     {
+        Logger Log = new Logger();
+
         public Dictionary<Student, int> Eval(List<Student> students, Dictionary<string, HomeWork> results, Solution solution)
         {
-            var votes = new Dictionary<Student, int>();
-            foreach(var pair in results)
+            try
             {
-                var studentId = pair.Key;
-                var student = GetStudentFromId(studentId, students);
-                var homework = pair.Value;
+                var votes = new Dictionary<Student, int>();
+                foreach(var pair in results)
+                {
+                    var studentId = pair.Key;
+                    var student = GetStudentFromId(studentId, students);
+                    var homework = pair.Value;
 
-                if(solution == homework)
-                {
-                    votes.Add(student, 10);
-                }
-                else
-                {
-                    if(homework.CountErrors(solution) == 1)
-                        votes.Add(student, 6);
+                    if(solution == homework)
+                    {
+                        votes.Add(student, solution.Super);
+                    }
                     else
-                        votes.Add(student, 3);
+                    {
+                        if(homework.CountErrors(solution) == 1)
+                            votes.Add(student, solution.Ok);
+                        else
+                            votes.Add(student, solution.No);
 
+                    }
                 }
+                return votes;    
             }
-            return votes;
+            catch(Exception e)
+            {
+                Log.Error("Something went wrong", e);
+                return null;
+            }
         }
 
         Student GetStudentFromId(string studentId, List<Student> students)
@@ -112,9 +132,18 @@ namespace GraspIt.Test
 
     public class Solution : HomeWork
     {
-        public static bool operator ==(Solution solution, HomeWork homework)
+        public int Super = 10;
+        public int Ok = 6;
+        public int No = 3;
+
+        public static bool operator ==(Solution solution, HomeWork other)
         {
-            return solution.Equals(homework);
+            //if (solution == other)
+            //    return true;
+            return solution.AnswerOnBiology == other.AnswerOnBiology &&
+                solution.AnswerOnHistory == other.AnswerOnHistory &&
+                solution.AnswerOnMusic == other.AnswerOnMusic &&
+                solution.MathResult == other.MathResult;
         }
 
         public static bool operator !=(Solution solution, HomeWork homework)
@@ -124,11 +153,12 @@ namespace GraspIt.Test
 
         public override bool Equals(object obj)
         {
-            var other = obj as HomeWork;
-            return AnswerOnBiology == other.AnswerOnBiology &&
-            AnswerOnHistory == other.AnswerOnHistory &&
-            AnswerOnMusic == other.AnswerOnMusic &&
-            MathResult == other.MathResult;
+            return object.ReferenceEquals(this, obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
