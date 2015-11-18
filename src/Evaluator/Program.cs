@@ -21,11 +21,17 @@ namespace Evaluator
 
             var solution = new Solution() { MathResult = 10, AnswerOnBiology = "no", AnswerOnHistory = "no", AnswerOnMusic = "no"};
 
+            Console.WriteLine("The solution should be" + solution.PrintReport());
+
             var gradeEvaluator = new GradeEvaluator();
             var grades = gradeEvaluator.Eval(students, results, solution);
             foreach(var grade in grades)
             {
                 Console.WriteLine("{0} got {1}", grade.Key.FirstName, grade.Value);
+                Console.WriteLine("  Homework report: {0}", results[grade.Key.Id]);
+
+                if (grade.Value == 3)
+                    Console.WriteLine(string.Format("  -> {0} will be rejected from school", grade.Key.FirstName));
             }
         }
     }

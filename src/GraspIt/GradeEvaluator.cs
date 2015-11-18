@@ -9,12 +9,6 @@ namespace GraspIt
     {
         NLog.Logger Log = LogManager.GetCurrentClassLogger();
 
-        void TweetResult(string firstName)
-        {
-            // TODO implement in the future
-            return;
-        }
-
         public Dictionary<Student, int> Eval(List<Student> students, Dictionary<string, HomeWork> results, Solution solution)
         {
             try
@@ -33,36 +27,36 @@ namespace GraspIt
                     bool perfectSolution = false;
                     try
                     {
-                        if (solution == homework)
+                        if (homework == solution && homework.CountErrors(solution) == 0)
                         {
                             perfectSolution = true;
                             TweetResult(student.FirstName);
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
-                        Log.Error("Cannot tweet result");
+                        Log.Error(e, "Cannot tweet result");
                     }
 
                     if(perfectSolution)
                     {
                         marks.Add(student, solution.HighestMark);
-
                     }
-                    else
-                    {
+
+
                         try
                         {
                             if (homework.CountErrors(solution) == 1)
                                 marks.Add(student, solution.MediumMark);
                             else
                                 marks.Add(student, solution.LowestMark);
-                        } catch
+                        }
+                        catch(Exception e)
                         {
-                            throw new ApplicationException("Can't add marks to student " + student.FirstName);
+                            Log.Error(e, "Can't add marks to student " + student.FirstName);
                         }
 
-                    }
+
                 }
                 return marks;    
             }
@@ -73,11 +67,16 @@ namespace GraspIt
             }
         }
 
+        void TweetResult(string firstName)
+        {
+            // TODO implement in the future
+        }
+
         Student GetStudentFromId(string studentId, List<Student> students)
         {
             try
             {
-                return students.Where(s => s.Id == studentId).First();
+                return students.Where(s => s.Id == studentId).FirstOrDefault();
             }
             catch
             {

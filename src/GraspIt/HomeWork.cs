@@ -23,6 +23,11 @@ namespace GraspIt
 
             return count;
         }
+
+        public override string ToString()
+        {
+            return string.Format("[HomeWork: MathResult={0}, AnswerOnHistory={1}, AnswerOnMusic={2}, AnswerOnBiology={3}]", MathResult, AnswerOnHistory, AnswerOnMusic, AnswerOnBiology);
+        }
     }
     
 }
