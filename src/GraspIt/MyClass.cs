@@ -1,10 +1,8 @@
-﻿namespace GraspIt
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace GraspIt
 {
-    public class MyClass
-    {
-        public bool DoSomething()
-        {
-            return true;
-        }
-    }
+  
 }
