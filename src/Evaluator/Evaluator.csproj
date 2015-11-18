@@ -36,9 +36,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\GraspIt.Test\GraspIt.Test.csproj">
-      <Project>{32920CD2-9CF5-4A27-8BC5-63CD01852B68}</Project>
-      <Name>GraspIt.Test</Name>
+    <ProjectReference Include="..\GraspIt\GraspIt.csproj">
+      <Project>{B6EF33D7-2115-4931-B3AF-8FD626C20D37}</Project>
+      <Name>GraspIt</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

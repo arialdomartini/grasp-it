@@ -1,6 +1,6 @@
 ﻿using System;
-using GraspIt.Test;
 using System.Collections.Generic;
+using GraspIt;
 
 namespace Evaluator
 {
@@ -22,10 +22,11 @@ namespace Evaluator
             var solution = new Solution() { MathResult = 10, AnswerOnBiology = "no", AnswerOnHistory = "no", AnswerOnMusic = "no"};
 
             var gradeEvaluator = new GradeEvaluator();
-            var votes = gradeEvaluator.Eval(students, results, solution);
-
-
-            Console.ReadLine();
+            var grades = gradeEvaluator.Eval(students, results, solution);
+            foreach(var grade in grades)
+            {
+                Console.WriteLine("{0} got {1}", grade.Key.FirstName, grade.Value);
+            }
         }
     }
 }
