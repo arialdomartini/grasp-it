@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace GraspIt.Test
 {
-    public class MyClassTest
+    public class EvaluatorTest
     {
         [Test]
         public void ShouldAssignMarksToStudents()

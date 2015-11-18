@@ -4,9 +4,9 @@ namespace GraspIt
 
     public class Solution : HomeWork
     {
-        public int Super = 10;
-        public int Ok = 6;
-        public int No = 3;
+        public int HighestMark = 10;
+        public int MediumMark = 6;
+        public int LowestMark = 3;
 
         public static bool operator ==(Solution solution, HomeWork homeWork)
         {

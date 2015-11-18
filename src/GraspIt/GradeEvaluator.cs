@@ -1,17 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using NLog;
 
 namespace GraspIt
 {
-
     public class GradeEvaluator
     {
-        Logger Log = new Logger();
+        NLog.Logger Log = LogManager.GetCurrentClassLogger();
+
+        void TweetResult(string firstName)
+        {
+            // TODO implement in the future
+            return;
+        }
 
         public Dictionary<Student, int> Eval(List<Student> students, Dictionary<string, HomeWork> results, Solution solution)
         {
-//            try
+            try
             {
                 var marks = new Dictionary<Student, int>();
                 foreach(var pair in results)
@@ -24,20 +30,34 @@ namespace GraspIt
                     
                     var homework = pair.Value;
 
-                    if(solution == homework)
+                    bool perfectSolution = false;
+                    try
                     {
-                        marks.Add(student, solution.Super);
+                        if (solution == homework)
+                        {
+                            perfectSolution = true;
+                            TweetResult(student.FirstName);
+                        }
+                    }
+                    catch
+                    {
+                        Log.Error("Cannot tweet result");
+                    }
+
+                    if(perfectSolution)
+                    {
+                        marks.Add(student, solution.HighestMark);
+
                     }
                     else
                     {
                         try
                         {
-                            if(homework.CountErrors(solution) == 1)
-                                marks.Add(student, solution.Ok);
+                            if (homework.CountErrors(solution) == 1)
+                                marks.Add(student, solution.MediumMark);
                             else
-                                marks.Add(student, solution.No);
-                        }
-                        catch
+                                marks.Add(student, solution.LowestMark);
+                        } catch
                         {
                             throw new ApplicationException("Can't add marks to student " + student.FirstName);
                         }
@@ -46,16 +66,23 @@ namespace GraspIt
                 }
                 return marks;    
             }
-//            catch(Exception e)
-//            {
-//                Log.Error("Something went wrong", e);
-//                return null;
-//            }
+            catch(Exception e)
+            {
+                Log.Error(e);
+                return null;
+            }
         }
 
         Student GetStudentFromId(string studentId, List<Student> students)
         {
-            return students.Where(s => s.Id == studentId).First();
+            try
+            {
+                return students.Where(s => s.Id == studentId).First();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
     
