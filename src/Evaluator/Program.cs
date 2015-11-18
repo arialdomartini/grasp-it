@@ -23,7 +23,7 @@ namespace Evaluator
 
             Console.WriteLine("The solution should be" + solution.PrintReport());
 
-            var gradeEvaluator = new GradeEvaluator();
+            var gradeEvaluator = new MarksEvaluator();
             var grades = gradeEvaluator.Eval(students, results, solution);
             foreach(var grade in grades)
             {

@@ -5,7 +5,7 @@ using NLog;
 
 namespace GraspIt
 {
-    public class GradeEvaluator
+    public class MarksEvaluator
     {
         NLog.Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -65,6 +65,7 @@ namespace GraspIt
                                 break;
                             }
                             marks.Add(student, mediumMark);
+
                         }
                         else
                         {
@@ -75,6 +76,7 @@ namespace GraspIt
                                 break;
                             }
                             marks.Add(student, lowestMark);
+                            TweetResult(student.FirstName);
                         }
                     }
                     catch(Exception e)

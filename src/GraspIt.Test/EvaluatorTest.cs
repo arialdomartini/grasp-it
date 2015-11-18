@@ -23,7 +23,7 @@ namespace GraspIt.Test
 
             var solution = new Solution() { MathResult = 10, AnswerOnBiology = "no", AnswerOnHistory = "no", AnswerOnMusic = "no"};
 
-            var gradeEvaluator = new GradeEvaluator();
+            var gradeEvaluator = new MarksEvaluator();
             var votes = gradeEvaluator.Eval(students, results, solution);
 
             votes[john].Should().Be(3);
