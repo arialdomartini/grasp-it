@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using NLog;
+using System.Configuration;
+using NLog.LayoutRenderers;
 
 namespace GraspIt
 {
@@ -95,7 +97,7 @@ namespace GraspIt
 
         void TweetResult(string firstName)
         {
-            // TODO implement in the future
+            TwitterClient.GetInstance().Connect();
         }
 
         Student GetStudentFromId(string studentId, List<Student> students)
@@ -110,5 +112,4 @@ namespace GraspIt
             }
         }
     }
-    
 }

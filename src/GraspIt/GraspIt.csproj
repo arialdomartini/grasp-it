@@ -40,6 +40,7 @@
     <Compile Include="Solution.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="MarksEvaluator.cs" />
+    <Compile Include="TwitterClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
