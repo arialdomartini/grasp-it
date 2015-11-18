@@ -20,14 +20,19 @@ namespace GraspIt
      
                     var student = GetStudentFromId(studentId, students);
                     if(student == null)
-                        throw new ApplicationException("Student not found");
+                    {
+                        Log.Error(string.Format("Cannot find student with id {0}", studentId));
+                        break;
+                    }
                     
                     var homework = pair.Value;
-
+                    if(pair.Value == null)
+                        break;
+                    
                     bool perfectSolution = false;
                     try
                     {
-                        if (homework == solution && homework.CountErrors(solution) == 0)
+                        if (solution == homework && homework.CountErrors(solution) == 0)
                         {
                             perfectSolution = true;
                             TweetResult(student.FirstName);
@@ -40,23 +45,42 @@ namespace GraspIt
 
                     if(perfectSolution)
                     {
-                        marks.Add(student, solution.HighestMark);
+                        var highestMark = solution.HighestMark;
+                        if(highestMark == 0)
+                        {
+                            Log.Error(string.Format("Skipping student {0}, no HighestMark found.", student.FirstName));
+                            break;
+                        }
+                        marks.Add(student, highestMark);
                     }
 
-
-                        try
+                    try
+                    {
+                        if (homework.CountErrors(solution) == 1)
                         {
-                            if (homework.CountErrors(solution) == 1)
-                                marks.Add(student, solution.MediumMark);
-                            else
-                                marks.Add(student, solution.LowestMark);
+                            var mediumMark = solution.MediumMark;
+                            if(mediumMark == 0)
+                            {
+                                Log.Error(string.Format("Skipping student {0}, no MediumMark found", student.FirstName));
+                                break;
+                            }
+                            marks.Add(student, mediumMark);
                         }
-                        catch(Exception e)
+                        else
                         {
-                            Log.Error(e, "Can't add marks to student " + student.FirstName);
+                            var lowestMark = solution.LowestMark;
+                            if(lowestMark == 0)
+                            {
+                                Log.Error(string.Format("Skipping student {0}, no LowestMark found", student.FirstName));
+                                break;
+                            }
+                            marks.Add(student, lowestMark);
                         }
-
-
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Error(e, "Can't add marks to student " + student.FirstName);
+                    }
                 }
                 return marks;    
             }

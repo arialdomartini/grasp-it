@@ -1,11 +1,9 @@
 using System.Text;
 
-
 namespace GraspIt
 {
     public class Solution : HomeWork
     {
-
         public int HighestMark = 10;
         public int MediumMark = 6;
         public int LowestMark = 3;
@@ -27,15 +25,14 @@ namespace GraspIt
             sb.AppendLine("Question abot Biology is: are mushrooms animals?");
             sb.AppendLine("  Biology: " + this.AnswerOnBiology);
 
-
             return sb.ToString();
         }
 
         public static bool operator ==(Solution solution, HomeWork homeWork)
         {
-            return solution.AnswerOnBiology == homeWork.AnswerOnBiology && 
-                solution.AnswerOnHistory == homeWork.AnswerOnHistory && 
-                solution.AnswerOnMusic == homeWork.AnswerOnMusic && 
+            return solution.AnswerOnBiology == (homeWork as Solution).AnswerOnBiology && 
+                solution.AnswerOnHistory == (homeWork as Solution).AnswerOnHistory && 
+                solution.AnswerOnMusic == (homeWork as Solution).AnswerOnMusic && 
                 solution.MathResult == (homeWork as Solution).MathResult;
          }
             
