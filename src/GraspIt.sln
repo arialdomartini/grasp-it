@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraspIt", "GraspIt\GraspIt.csproj", "{B6EF33D7-2115-4931-B3AF-8FD626C20D37}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeadProgramsTellNoLies", "DeadProgramsTellNoLies", "{46CD16DA-2ACB-47CA-B7E2-3533AB33E1E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraspIt.Test", "GraspIt.Test\GraspIt.Test.csproj", "{32920CD2-9CF5-4A27-8BC5-63CD01852B68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator", "DeadProgramsTellNoLies\Evaluator\Evaluator.csproj", "{162BE477-275B-4AE4-8846-E322B8E30D7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator", "Evaluator\Evaluator.csproj", "{162BE477-275B-4AE4-8846-E322B8E30D7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator.Test", "DeadProgramsTellNoLies\Evaluator.Test\Evaluator.Test.csproj", "{32920CD2-9CF5-4A27-8BC5-63CD01852B68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +21,9 @@ Global
 		{32920CD2-9CF5-4A27-8BC5-63CD01852B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32920CD2-9CF5-4A27-8BC5-63CD01852B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32920CD2-9CF5-4A27-8BC5-63CD01852B68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6EF33D7-2115-4931-B3AF-8FD626C20D37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6EF33D7-2115-4931-B3AF-8FD626C20D37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6EF33D7-2115-4931-B3AF-8FD626C20D37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6EF33D7-2115-4931-B3AF-8FD626C20D37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{162BE477-275B-4AE4-8846-E322B8E30D7A} = {46CD16DA-2ACB-47CA-B7E2-3533AB33E1E4}
+		{32920CD2-9CF5-4A27-8BC5-63CD01852B68} = {46CD16DA-2ACB-47CA-B7E2-3533AB33E1E4}
 	EndGlobalSection
 EndGlobal
