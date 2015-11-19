@@ -1,1 +1,2 @@
-docker run  -v $(pwd)/src:/var/buildmachine/src -v $(pwd)/build:/var/buildmachine/build  arialdomartini/csharp-build-machine
+#!/bin/bash
+mono "tools/FAKE/tools/Fake.exe" build.fsx $1
