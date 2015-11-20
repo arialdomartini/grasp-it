@@ -82,18 +82,21 @@ In Pragmatic Programmer, Andrew Hunt e David Thomas forniscono questa regola del
 
 Prova a modificare il codice in modo che qualsiasi evento inatteso mandi in crash il sistema. Non è difficile: il framework .NET, al pari di Java, svolge questo compito in automatico; quando durante l'esecuzione accade qualcosa che non era prevista dal codice, l'esecuzione si interrompe, viene lanciata un'eccezione e il runtime fa risalire l'eccezione alla ricerca di chi sappia gestirla. Nel tuo caso, siccome l'evento è inatteso (è un bug inavvertitamente introdotto dallo sviluppatore) non avrai che da ignorarlo e lasciare che l'applicazione vada in crash. In sostanza, tutto quello che hai da fare è eliminare i `try/catch`.
 
-Attenzione: ci sono eventi inattesi e eventi che invece possono essere previsti, pur restando non graditi. Per esempio , se il programma accetta valori di input dall'esterno, è cosa buona e giusta verificare che i valori immessi siano validi. Al contrario, se si invoca un costruttore, il fatto che la memoria si esaurisca è un evento inatteso.
+Nota che ci sono eventi inattesi ed eccezionali e eventi che invece possono essere previsti, pur restando non graditi. Per esempio , se il programma accetta valori di input dall'utente, è cosa buona e giusta verificare che i valori immessi siano validi. Al contrario, se si invoca un costruttore, il fatto che la memoria si esaurisca è un evento inatteso.
 
 Il suggerimento per questo esercizio è: verifica quel che è prevedibile, lascia che sia il sistema di runtime a gestire l'imprevedibile, e non spaventarti se questo significa che il programma andrà in crash; un crash controllato è sempre meglio di un programma in funzione, con uno stato totalmente fuori controllo.
 
 Puoi leggere i `try/catch` come tentavivi di controllare l'imprevedibile: un `try/catch` dice
 
 
-> *Se qualcosa dovesse andare male in questa sezione di codice, non andare in crash, ma cerca di recuperare l'esecuzione e supponi che il codice che si è rotto abbia dato questo risultato di default; il resto del programma gestirà questo caso eccezionale*.
-
+> *Se qualcosa dovesse andare male in questa sezione di codice, non andare in crash, ma cerca di recuperare l'esecuzione assumendo che il codice che si è rotto abbia dato questo risultato di default; il resto del programma gestirà questo caso eccezionale*.
 
 Questo è proprio l'approccio del nostro programma. Il quale, purtroppo, gestisce il caso eccezionale in modo non corretto, con risultati disastrosi.
 
 In questo esercizio, prova ad affrontare l'argomento in modo diverso: prova a modificare il programma rimuovendo tutti i costrutti difensivi (gli `if` che non svolgano logica di dominio e i `try/catch`); lascia che un evento imprevedibile mandi in crash il programma, confidando sul suggerimento di Pragmatic Programmer: un programma morto fa meno danni di uno rotto, Dead Programs Tell No Lies.
 
-Nel caso del nostro programma, l'evento imprevedibile è un bug, un difetto nel codice. Possibile che un `try/catch` riesca a proteggere il programma e la sua logica di dominio da un errore di programmazione introdotto dallo sviluppatore?
+
+## Domande
+
+* Nel caso del nostro programma, l'evento imprevedibile è un bug, un difetto nel codice. Come possono i `try/catch` riuscire a proteggere il programma e la sua logica di dominio da un errore di programmazione introdotto dallo sviluppatore?
+* La pratica del TDD ha influenza sullo stile difensivo del codice?
