@@ -62,4 +62,10 @@ Related sections include:
 
 
 # Challenge
-todo
+
+In this directory there's a C# project with a failing test. Your goal is to make the test pass, fixing the production code.
+
+## Details
+The program evaluates the homeworks of 3 students, comparing them with the official solution, then it assigns the students the final marks, which are used to determine if the students pass or fail. The homework consists of 4 questions: if all the answers are right, the final mark is 10; with 1 error the mark is 6; 2 errors or more give the mark 3, and implicates the rejection from school.
+
+You will easily realize that the program has a very poor quality: it is terribly procedural, it has not been developed with TDD, it contains a lot of bugs and its code is plagued by defensive checks, so much that the domain logic is hidden by a mass of `if`s and `try/catch`es. What's wrong, it is apparent that the developer tried hard to avoid the program crashes. Unluckily, this goal has been reached at a high price: there's a bug, somewhere, that rather than crashing the programs, corrupts its state and keeps it in life, leading it to unexpected results; as a consequence, one of the students gets the wrong mark and gets unfairly rejected.
