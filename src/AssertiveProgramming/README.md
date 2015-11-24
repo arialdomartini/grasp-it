@@ -40,7 +40,7 @@ for (int i = 0; i < num_entries-1; i++) {
 
 ```
 
-Of course, the condition passed to an assertion should not have a side effect (see the box on page 124). Also remember that assertions may be turned off at compile time—never put code that must be executed into an assert.
+Of course, the condition passed to an assertion should not have a side effect (see the box on page 124). Also remember that assertions may be turned off at compile time —- never put code that must be executed into an assert.
 
 Don't use assertions in place of real error handling. Assertions check for things that should never happen: you don't want to be writing code such as
 
@@ -58,7 +58,7 @@ And just because the supplied `assert` macros call exit when an assertion fails,
 
 There is a common misunderstanding about assertions, promulgated by the people who write compilers and language environments. It goes something like this:
 
-> Assertions odd some overhead to code. Because they check for things that should never happen, they'll get triggered only by a bug in the code. Once the code has been tested and shipped, they are no longer needed, and should be turned off to make the code run faster. Assertions are a debugging facility.
+> Assertions add some overhead to code. Because they check for things that should never happen, they'll get triggered only by a bug in the code. Once the code has been tested and shipped, they are no longer needed, and should be turned off to make the code run faster. Assertions are a debugging facility.
 
 There are two patently wrong assumptions here. First, they assume that testing finds all the bugs. In reality, for any complex program you are unlikely to test even a miniscule
 percentage of the permutations your code will be put through (see Ruthless Testing). Second, the optimists are forgetting that your program runs in a dangerous world. During testing, rats probably won't gnaw through a communications cable, someone playing a game won't exhaust memory, and log files won't fill the hard drive. These things might happen when your program runs in a production environment. Your first line of defense is checking for any possible error, and your second is using assertions to try to detect those you've missed.
@@ -69,7 +69,7 @@ Even if you do have performance issues, turn off only those assertions that real
 
 ### Assertion and Side Effects
 
-It is embarrassing when the code we add to detect errors actually ends up creatings new errors. This can happen with assertions if evaluating the condition has side effects. for example, in Java it would be a bad to code something such as
+It is embarrassing when the code we add to detect errors actually ends up creatings new errors. This can happen with assertions if evaluating the condition has side effects. For example, in Java it would be a bad to code something such as
 
 ```c
 while (iter.hasmoreElements () {
