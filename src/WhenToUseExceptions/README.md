@@ -59,7 +59,7 @@ One of the problems with exceptions is knowing when to use them. We believe that
 For example, if your code tries to open a file for reading and that file does not exist, should an exception be raised?
 
 
-Our answer is, "*It depends.*" If the file should have been there, then an exception is warranted. Something unexpected happened—a file you were expecting to exist seems to have disappeared. On the other hand, if you have no idea whether the file should exist or not, then it doesn't seem exceptional if you can't find it, and an error return is appropriate.
+Our answer is, "*It depends.*" If the file should have been there, then an exception is warranted. Something unexpected happened — a file you were expecting to exist seems to have disappeared. On the other hand, if you have no idea whether the file should exist or not, then it doesn't seem exceptional if you can't find it, and an error return is appropriate.
 
 
 Let's look at an example of the first case. The following code opens the file `/etc/passwd`, which should exist on all Unix systems. If it fails, it passes on the `FileNotFoundException` to its caller.
@@ -85,7 +85,7 @@ public boolean open_user_file(String name) throws FileNotFoundException {
 }
 ```
 
-Note that the `FileInputStream` call can still generate an exception, which the routine passes on. However, the exception will be generated under only truly exceptional circumstances; simply trying to open a fi  le that does not exist will generate a conventional error return.
+Note that the `FileInputStream` call can still generate an exception, which the routine passes on. However, the exception will be generated under only truly exceptional circumstances; simply trying to open a file that does not exist will generate a conventional error return.
 
 
 Tip 34|
