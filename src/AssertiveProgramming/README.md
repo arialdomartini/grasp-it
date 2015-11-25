@@ -1,8 +1,7 @@
+[Table of Contents](../../README.md) - [Italian](README-italian.md)
 # Assertive Programming
 
 Except from [The Pragmatic Programmer: From Journeyman to Master ](http://www.amazon.it/The-Pragmatic-Programmer-Journeyman-Master/dp/020161622X) by Andrew Hunt and David Thomas
-
-[English](README.md) - [Italian](README-italian.md)
 
 > There is a luxury in self-reproach. When we blame ourselves we feel no one else has a right to blame us.
 > (Oscar Wilde, The Picture of Dorian Gray)

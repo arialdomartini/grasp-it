@@ -1,9 +1,8 @@
+[Table of Contents](../../README.md) - [Italian](README-italian.md)
 # Dead Programs Tell No Lies
 
 
 Except from [The Pragmatic Programmer: From Journeyman to Master ](http://www.amazon.it/The-Pragmatic-Programmer-Journeyman-Master/dp/020161622X) by Andrew Hunt and David Thomas
-
-[English](README.md) - [Italian](README-italian.md)
 
 ### Dead Programs Tell No Lies
 
