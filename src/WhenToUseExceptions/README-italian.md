@@ -6,7 +6,7 @@ Estratto da [The Pragmatic Programmer: From Journeyman to Master ](http://www.am
 
 [English](README.md) - [Italian](README-italian.md)
 
-In [Dead Programs Tell No Lies](../DeadProgramsTellNoLies/README-italian.md) abbiamo suggerito che sia una buona pratica verificare ogni possibile errore, specialmente quelli inattesi. Tuttavia, nella pratica questo porta a scrive del codice piuttosto brutto; la logica di dominio del programma finisce per essere completamente oscurata dal codice per la gestione degli errori, soprattutto se si aderisce alla scuola "*una routing deve avere un singolo return*" (che noi non condividiamo). Ognuno di noi ha visto codice come questo:
+In [Dead Programs Tell No Lies](../DeadProgramsTellNoLies/README-italian.md) sosteniamo che sia una buona abitudine verificare tutti gli errori possibili, specialmente quelli inattesi. Tuttavia, in pratica questo porta a scrivere del codice piuttosto brutto; la logica di dominio del programma finisce per essere completamente oscurata dal codice per la gestione degli errori, soprattutto se si aderisce alla scuola "*una routing deve avere un singolo return*" (che noi non condividiamo). Ognuno di noi ha visto codice come questo:
 
 ```c
 retcode = OK;
