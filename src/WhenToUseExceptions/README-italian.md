@@ -93,11 +93,3 @@ Usa le eccezioni per circostanze eccezionali|
 
 Perché suggeriamo questo approccio per le eccezioni? Beh, un'eccezione rappresenta un trasferimento di controllo non locale ed immediato - è una sorta di cascata di `goto`. I programmi che utilizzano le eccezioni per gestire il normale flusso di processo soffrono dei medesimi problemi di leggibilità e manutenibilità dello spaghetti code. Questi programmi rompono l'incapsulamento: le routine e i loro chiamanti, a causa dell'exception handling, diventano molto più accoppiati.
 
-## Gli Error Handler sono un'alternativa
-
-Un erorr handler è una routine che viene invocata quando viene individuato un errore. Si può registrare una routine perché gestisca una particolare categoria di errori. Quando capita uno di questi errori, la routine viene invocata.
-
-Ci sono occasioni in cui è desiderabile usare degli error handler, come alternativa o come compendio delle eccezioni. Chiaramente, se si sta utilizzando un linguaggio come il C, che non ha il supporto per le eccezioni, questa resta una delle poche opzioni a disposizione. Comunque, a volte gli error handler risultano comodi anche in altri linguaggi che hanno un buon supporto per le eccezioni (come Java).
-
-Si consideri per esempio l'implementazione di un'applicazione client-server che utilizzi la Java Remote Method Invocation (RMI). Per via del modo in cui RMI è implementato, ogni invocazione ad una routine remota deve predisporsi a gestire un'eventuale `RemoteException`. Aggiungere il codice per gestire queste eccezioni potrebbe risultare noioso, e comporta anche che sia difficile realizzare del codice che funziona sia con chiamate locali che con chiamate remote. Un possibile workaround è quello di usare una classe wrapper locale intorno aggli oggetti remoti. Questa classe può implementare un'interfaccia di error handling, permettendo così al codice client di registrare una routine da invocare nel caso in cui un'eccezione remota viene individuata.
-
