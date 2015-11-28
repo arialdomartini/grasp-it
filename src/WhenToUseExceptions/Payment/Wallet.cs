@@ -4,7 +4,8 @@ namespace Payment
 {   
     public class Wallet
     {
-        const int tax = 2;
+        public bool IsOwnedByNonProfitOrganization { get; set; }
+        const int Tax = 2;
 
         ITaxOffice _taxOffice;
         ILoanShark _loanShark;
@@ -26,20 +27,27 @@ namespace Payment
         {
             if (amount < 0)
                 throw new ArgumentException();
+            var actualValue = 0;
             try
             {
-                Balance -= TryWithdrawMoney(amount);
+                actualValue = TryWithdrawMoney(amount);
+            }
+            catch(TaxFreeException)
+            {
+                actualValue = amount;
             }
             catch(NeedTaxesException)
             {
+                var tax = GetTaxes();
                 _taxOffice.Pay(tax);
-                Balance -= (amount + tax);
+                actualValue = (amount + tax);
             }
             catch(InsufficientBalanceException)
             {
                 _loanShark.Alert();
                 throw;
             }
+            Balance -= actualValue;
         }
 
         public int TryWithdrawMoney(int wishedAmount)
@@ -52,11 +60,18 @@ namespace Payment
             }
             if(wishedAmount > 1000)
             {
-                if (Balance - wishedAmount - tax < 0)
+                if (Balance - wishedAmount - GetTaxes() < 0)
                     throw new InsufficientBalanceException();
                 throw new NeedTaxesException();
             }
             return wishedAmount;
+        }
+
+        int GetTaxes()
+        {
+            if (IsOwnedByNonProfitOrganization)
+                throw new TaxFreeException();
+            return Tax;
         }
     }
 
@@ -73,4 +88,5 @@ namespace Payment
     public class InsufficientBalanceException : Exception {}
     public class EmptyWalletException : Exception {}
     public class NeedTaxesException : Exception {};
+    public class TaxFreeException : Exception {};
 }

@@ -25,6 +25,13 @@ namespace Payment.Test
             sut.Balance.Should().Be(0);
         }
 
+
+        [Test]
+        public void ByDefaultWalletAreNotOwnedByNonProfitOrganizations()
+        {
+            sut.IsOwnedByNonProfitOrganization.Should().BeFalse();
+        }
+
         [TestCase(100)]
         [TestCase(0)]
         [TestCase(1000)]
@@ -140,6 +147,23 @@ namespace Payment.Test
 
             sut.Balance.Should().Be(initialBalance - requiredAmount - 2);
         }
+
+
+        [TestCase(1001)]
+        [TestCase(1002)]
+        [TestCase(2000)]
+        public void IfTheWalletOwnerIsANonProfitOrganizationTaxationIsApplied(int requiredAmount)
+        {
+            var initialBalance = 10000;
+            sut.IsOwnedByNonProfitOrganization = true;
+            sut.Deposit(initialBalance);
+
+            sut.Withdraw(requiredAmount);
+
+            sut.Balance.Should().Be(initialBalance - requiredAmount);
+        }
+
+
 
         [TestCase(1001)]
         [TestCase(1002)]
