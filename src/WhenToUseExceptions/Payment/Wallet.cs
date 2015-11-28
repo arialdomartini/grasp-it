@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Reflection.Emit;
 
 namespace Payment
 {   
     public class Wallet
     {
-        public bool IsOwnedByNonProfitOrganization { get; set; }
+        public Owner WalletOwner { get; set; }
         const int Tax = 2;
 
         ITaxOffice _taxOffice;
@@ -30,22 +31,24 @@ namespace Payment
             var actualValue = 0;
             try
             {
-                actualValue = TryWithdrawMoney(amount);
+                try
+                {
+                    actualValue = TryWithdrawMoney(amount);
+                }
+                catch(NeedTaxesException)
+                {
+                    _taxOffice.Pay(GetSocialSecurityNumber(), Tax);
+                    actualValue = (amount + Tax);
+                }
+                catch(InsufficientBalanceException)
+                {
+                    _loanShark.Alert();
+                    throw;
+                }
             }
-            catch(TaxFreeException)
+            catch
             {
                 actualValue = amount;
-            }
-            catch(NeedTaxesException)
-            {
-                var tax = GetTaxes();
-                _taxOffice.Pay(tax);
-                actualValue = (amount + tax);
-            }
-            catch(InsufficientBalanceException)
-            {
-                _loanShark.Alert();
-                throw;
             }
             Balance -= actualValue;
         }
@@ -60,29 +63,34 @@ namespace Payment
             }
             if(wishedAmount > 1000)
             {
-                if (Balance - wishedAmount - GetTaxes() < 0)
+                if (Balance - wishedAmount - Tax < 0)
                     throw new InsufficientBalanceException();
                 throw new NeedTaxesException();
             }
             return wishedAmount;
         }
 
-        int GetTaxes()
+        string GetSocialSecurityNumber()
         {
-            if (IsOwnedByNonProfitOrganization)
-                throw new TaxFreeException();
-            return Tax;
+            return WalletOwner.SocialSecurityNumber;
         }
     }
 
     public interface ITaxOffice
     {
-        void Pay(int tax);
+        void Pay(string nationalSecurityNumber, int tax);
     }
 
     public interface ILoanShark
     {
         void Alert();
+    }
+
+    public class Owner
+    {
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+        public string SocialSecurityNumber { get; set; }
     }
 
     public class InsufficientBalanceException : Exception {}

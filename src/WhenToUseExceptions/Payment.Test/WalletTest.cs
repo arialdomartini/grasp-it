@@ -27,9 +27,9 @@ namespace Payment.Test
 
 
         [Test]
-        public void ByDefaultWalletAreNotOwnedByNonProfitOrganizations()
+        public void ByDefaultWalletIsNotOwnedByAnyone()
         {
-            sut.IsOwnedByNonProfitOrganization.Should().BeFalse();
+            sut.WalletOwner.Should().BeNull();
         }
 
         [TestCase(100)]
@@ -142,6 +142,7 @@ namespace Payment.Test
         {
             var initialBalance = 10000;
             sut.Deposit(initialBalance);
+            sut.WalletOwner = new Owner { FirstName = "foo", SecondName = "bar", SocialSecurityNumber = "1234" };
 
             sut.Withdraw(requiredAmount);
 
@@ -155,7 +156,7 @@ namespace Payment.Test
         public void IfTheWalletOwnerIsANonProfitOrganizationTaxationIsApplied(int requiredAmount)
         {
             var initialBalance = 10000;
-            sut.IsOwnedByNonProfitOrganization = true;
+            sut.WalletOwner = null;
             sut.Deposit(initialBalance);
 
             sut.Withdraw(requiredAmount);
@@ -171,11 +172,12 @@ namespace Payment.Test
         public void TaxOfficeReceivesTaxes(int requiredAmount)
         {
             const int initialBalance = 10000;
+            sut.WalletOwner = new Owner { FirstName = "foo", SecondName = "bar", SocialSecurityNumber = "1234" };
             sut.Deposit(initialBalance);
 
             sut.Withdraw(requiredAmount);
 
-            _taxOffice.Received().Pay(2);
+            _taxOffice.Received().Pay("1234", 2);
         }
 
         [TestCase(1001, 1001)]
