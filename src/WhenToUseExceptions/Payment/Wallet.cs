@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reflection.Emit;
+using System.IO;
+using System.Net.NetworkInformation;
 
 namespace Payment
 {   
@@ -7,6 +9,8 @@ namespace Payment
     {
         public Owner WalletOwner { get; set; }
         const int Tax = 2;
+
+        public string LogFile = System.IO.Path.GetTempFileName();
 
         ITaxOffice _taxOffice;
         ILoanShark _loanShark;
@@ -37,8 +41,12 @@ namespace Payment
                 }
                 catch(NeedTaxesException)
                 {
-                    _taxOffice.Pay(GetSocialSecurityNumber(), Tax);
+                    var tw = new StreamWriter(LogFile);
+                    var socialSecurityNumber = GetSocialSecurityNumber();
+                    tw.WriteLine("{0} paid {1}", socialSecurityNumber, Tax);
+                    _taxOffice.Pay(socialSecurityNumber, Tax);
                     actualValue = (amount + Tax);
+                    tw.Close();
                 }
                 catch(InsufficientBalanceException)
                 {
@@ -80,6 +88,7 @@ namespace Payment
     {
         void Pay(string nationalSecurityNumber, int tax);
     }
+
 
     public interface ILoanShark
     {
