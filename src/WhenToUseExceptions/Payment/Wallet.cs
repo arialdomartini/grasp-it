@@ -46,7 +46,7 @@ namespace Payment
                     throw;
                 }
             }
-            catch
+            catch(NullReferenceException)
             {
                 actualValue = amount;
             }
