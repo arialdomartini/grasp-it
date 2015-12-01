@@ -92,3 +92,25 @@ Use Exceptions for Exceptional Problems|
 
 Why do we suggest this approach to exceptions? Well, an exception represents an immediate, nonlocal transfer of control — it's a kind of cascading goto. Programs that use exceptions as part of their normal processing suffer from all the readability and maintainability problems of classic spaghetti code. These programs break encapsulation: routines and their callers are more tightly coupled via exception handling.
 
+
+# Challenge
+
+This directory contais a C# project where Exceptions are heavily used to manage the ordinary workflow. The goal is to refactor the code, and remove all the exception handling cases where exceptions have been used for the ordinary workflow and not for exceptional cases.
+
+## Details
+
+The program implements an online wallett. Its code is test covered, and ideally requirements could be inferred from tests. Nevertheless, the most important requirements are listed below, for the sake of clarity:
+
+* Money can be withdrawn from an instance of `Wallet`, as long as its property `Balance` does not get negative;
+* Any attempts to withdraw more money than available fails, and as a consequence a loanshark is alerted, so he can get ready to make a loan offer;
+* Withdrawing more than 1000 euros implies a 2 euros tax;
+* `Balance` must be big enough for the withdrawn and for the eventual tax, or the case is treated as an attempt to withdraw more money than available;
+* A `Wallet` is either owned by a physical person (stored in the field `WalletOwner`) or, in case `WalletOwner` is `null`, by a non-profit organization. Non-profit organizations' withdrawns are always tax free;
+* Any tax payment must be logged to file.
+
+As usual, in the code all the wrong practices have been taken to the limit. Even if the code has been developed in TDD, it is plagued by a lot of problems.
+
+## Questions
+
+* Pragmatic Programmer suggests an equivalence between exceptions and `goto`s, and claims that that use of exceptions makes the code affected to the same problems of non-structured code. Ths program contains a pretty hidden resource leak. Can you spot (and fix) it?
+* Kent Beck recommends that in the Red/Green/Refactor phases, in the Green one 
