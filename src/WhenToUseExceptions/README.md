@@ -108,9 +108,8 @@ The program implements an online wallett. Its code is test covered, and ideally 
 * A `Wallet` is either owned by a physical person (stored in the field `WalletOwner`) or, in case `WalletOwner` is `null`, by a non-profit organization. Non-profit organizations' withdrawns are always tax free;
 * Any tax payment must be logged to file.
 
-As usual, in the code all the wrong practices have been taken to the limit. Even if the code has been developed in TDD, it is plagued by a lot of problems.
+Even if the code has been developed in TDD, it is plagued by a lot of problems. All the wrong practices described by Pragmatic Programmer have been taken to the limit. 
 
 ## Questions
 
-* Pragmatic Programmer suggests an equivalence between exceptions and `goto`s, and claims that that use of exceptions makes the code affected to the same problems of non-structured code. Ths program contains a pretty hidden resource leak. Can you spot (and fix) it?
-* Kent Beck recommends that in the Red/Green/Refactor phases, in the Green one 
+* Pragmatic Programmer suggests an equivalence between exceptions and `goto`s, and claims that a wrong use of exceptions makes the code affected to the same problems of non-structured code. This program contains a hidden and subtle resource leak. Can you spot (and fix) it?

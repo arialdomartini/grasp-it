@@ -96,23 +96,21 @@ Perché suggeriamo questo approccio per le eccezioni? Beh, un'eccezione rapprese
 
 # La sfida
 
-In questa directory trovi un progetto C# che fa un pesante uso delle eccezioni per gestire il normale flusso di lavoro. Il tuo obiettivo è operare un refactoring del codice, rimuovendo l'utilizzo delle eccezioni nei casi in cui le eccezioni non siano stati usati per eventi eccezionali.
+In questa directory trovi un progetto C# che fa un pesante uso delle eccezioni per gestire il normale flusso di lavoro. Il tuo obiettivo è operare un refactoring del codice, rimuovendo l'utilizzo delle eccezioni nei casi in cui non siano stati usate per eventi eccezionali.
 
 ## Dettagli
 
 Il programma implementa un portafoglio online. Il codice è coperto di test, e da quelli si possono ricavare i requisiti. Riportiamo comunque qui i requisiti principali:
 
 * Da un `Wallet` si possono ritirare soldi, fintanto che che il conto non va in rosso e la sua proprietà `Balance` non diventa negativa;
-* Il tentativo di prelevare più soldi di quelli disponibili fallisce e, al contempo, viene inviato un avvertimento ad uno strozzino perché si tenga pronto a fare un prestito;
+* Il tentativo di prelevare più soldi di quelli disponibili fallisce e, al contempo, fa sì che venga inviato un avvertimento ad uno strozzino perché si tenga pronto a fare un prestito;
 * Se si prelevano più di 1000 euro viene applicata una tassa di 2 euro;
 * Se il saldo non è sufficiente per il prelievo e per la tassa, il caso viene considerato alla stregua del tentativo di prelevare più di quanto disponibile;
 * Se il proprietaario del `Wallet` è una persona fisica, i suoi campi sono conservati nel field `WalletOwner`. Nel caso `WalletOwner` sia `null`, il `Wallet` viene considerato proprietà di un'azienda non-profit esentasse;
 * Il pagamento di una tassa viene loggata su file.
 
-Al solito, nel codice di questo progetto si è cercato di esasperare alcune cattive pratiche. Nonontante il codice sia stato sviluppato in TDD, è affetto da molti problemi. 
-
+Nonontante il codice sia stato sviluppato in TDD, è affetto da molti problemi. Al solito, le cattive pratiche di cui parla Pragmatic Programmer sono state esasperate.
 
 ## Domande
 
-* Pragmatic Programmer suggerisce che le eccezioni siano equivalenti ai `goto`, e che rendano il codice affetto dai medesimi problemi del codice non strutturato. Il programma contiene un resource leak nascosto. Riesci a vederlo, e a correggerlo?
-* Kent Beck raccomanda che, durante le fasi Red/Green/Refactor, la fase Green richieda di scriver il minimo codice indispensabile per far passare il test, e aderire così al principio KISS. In quale modo i test giustificano l'uso delle eccezioni per la gestione del flusso di lavoro?
+* Pragmatic Programmer sostiene che le eccezioni siano equivalenti a dei `goto`, e che rendano il codice affetto dai medesimi problemi del codice non strutturato. Il programma contiene un resource leak nascosto. Riesci a vederlo, e a correggerlo?
