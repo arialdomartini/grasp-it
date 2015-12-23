@@ -16,9 +16,9 @@ This function sets the value of a named attribute and returns `true` if it is su
 ```java
 if (set("username", "unclebob"))...
 ```
-Imagine this from the point of view of the reader. What does it mean? Is it asking whether the “`username`” attribute was previously set to “`unclebob`”? Or is it asking whether the “`username`” attribute was successfully set to “`unclebob`”? It’s hard to infer the meaning from the call because it’s not clear whether the word “`set`” is a verb or an adjective.
+Imagine this from the point of view of the reader. What does it mean? Is it asking whether the `username` attribute was previously set to `unclebob`? Or is it asking whether the `username` attribute was successfully set to `unclebob`? It’s hard to infer the meaning from the call because it’s not clear whether the word `set` is a verb or an adjective.
 
-The author intended set to be a verb, but in the context of the `if` statement it feels like an adjective. So the statement reads as “*If the `username` attribute was previously set to `unclebob`*” and not “*set the `username` attribute to `unclebob` and if that worked then. . . .*” We could try to resolve this by renaming the `set` function to `setAndCheckIfExists`, but that doesn’t much help the readability of the `if` statement. The real solution is to separate the command from the query so that the ambiguity cannot occur.
+The author intended set to be a verb, but in the context of the `if` statement it feels like an adjective. So the statement reads as *“If the `username` attribute was previously set to `unclebob`”* and not *“set the `username` attribute to `unclebob` and if that worked then...”* We could try to resolve this by renaming the `set` function to `setAndCheckIfExists`, but that doesn’t much help the readability of the `if` statement. The real solution is to separate the command from the query so that the ambiguity cannot occur.
 
 ```java
 if (attributeExists("username")) {
@@ -38,7 +38,8 @@ This does not suffer from verb/adjective confusion but does lead to deeply neste
 ```java
 if (deletePage(page) == E_OK) {
     if (registry.deleteReference(page.name) == E_OK) {
-        if (configKeys.deleteKey(page.name.makeKey()) == E_OK){ logger.log("page deleted");
+        if (configKeys.deleteKey(page.name.makeKey()) == E_OK) {
+            logger.log("page deleted");
         } else {
             logger.log("configKey not deleted");
         }
@@ -53,7 +54,9 @@ On the other hand, if you use exceptions instead of returned error codes, then t
 
 ```java
 try {
-    deletePage(page); registry.deleteReference(page.name); configKeys.deleteKey(page.name.makeKey());
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
 }
 catch (Exception e) {
     logger.log(e.getMessage()); }

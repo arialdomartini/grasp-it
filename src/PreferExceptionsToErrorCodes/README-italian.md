@@ -6,21 +6,21 @@ Estratto da [Clean Code: A Handbook of Agile Software Craftsmanship](http://www.
 
 ## Command Query Separation
 
-Le funzioni dovrebbero o fare qualcosa o dare delle risposte, ma non entrambe le cose. Una funzione dovrebbe cambiare lo stato di un oggetto, oppure restituire qualche informazione dell'oggetto. Eseguire entrambe le operazioni molto spesso crea confusione. Per esempio, si consideri la seguente funzione:
+Le funzioni dovrebbero eseguire un'operazione o fornire delle risposte, ma non entrambe le cose insieme. Una funzione dovrebbe cambiare lo stato di un oggetto, oppure restituire qualche informazione dell'oggetto. Eseguire entrambe le operazioni molto spesso crea confusione. Per esempio, si consideri la seguente funzione:
 
 ```java
 public boolean set(String attribute, String value);
 ```
 
-Questa funzione imposta il valore di un attributo individuato da un certo nome, e restituisce `true` in caso di successo, e `false` nel caso l'attributo non esista. Questo conduce a statement bizzarri, come questo:
+Questa funzione imposta il valore all'attributo di nome `attribute`, e restituisce `true` in caso di successo, e `false` nel caso l'attributo non esista. Una funzione così concepita conduce a situazioni bizzarre, come questa:
 
 ```java
 if (set("username", "unclebob"))...
 ```
 
-Valutiamolo dal punto di vista del lettore. Cosa significa quell'espressione `if`? Forse verifica che l'attributo “`username`” abbia il valore “`unclebob`? O forse valuta se attributo “`username`” sia stato impostato con successo al valore “`unclebob`? È difficile desumere la semantica, perché non è chiaro se la parola `set` sia un verbo o un aggettivo.
+Valutiamola dal punto di vista del lettore. Cosa significa quell'espressione `if`? Forse verifica che l'attributo `username` abbia il valore `unclebob`? O forse valuta se attributo `username` sia stato impostato con successo al valore `unclebob`? È difficile desumere la semantica, perché non è chiaro se la parola `set` sia un verbo o un aggettivo.
 
-L'autore intende usare il termine nell'accezione di verbo, ma nel contesto di un `if`, quel `set` sembra un aggettivo, per cui l'espressione rischia di essere letta come '*se l'attributo `username` ha il valore `unclebob`*', invece che '*imposta l'attributo `username` al valore `unclebob`*'. Si potrebbe provare a risolvere l'ambiguità rinominando la funzione `set` a `setAndCheckIfExists`, ma anche questo tentativo non migliora molto la leggibilità dell'`if`. La soluzione ideale è quella di separare il comando dalla query, in modo che l'ambiguità non possa capitare:
+L'autore intendeva usare il termine nell'accezione di verbo, ma nel contesto di un `if` quel `set` sembra un aggettivo, per cui l'espressione rischia di essere letta come *"se l'attributo `username` ha il valore `unclebob`"*, invece che *"imposta l'attributo `username` al valore `unclebob`, e se la cosa è stata eseguita con successo allora..."*. Si potrebbe provare a risolvere l'ambiguità rinominando la funzione `set` a `setAndCheckIfExists`, ma anche questo tentativo non migliora molto la leggibilità dell'`if`. La soluzione ideale è quella di separare il Commnd dalla Query, in modo che l'ambiguità non possa capitare:
 
 
 ```java
@@ -30,7 +30,7 @@ if (attributeExists("username")) {
 ```
 
 ## Le eccezioni sono da preferire ai codici di errore
-Una funzione Command che restituisce codici di errore è una sottile violazione del principio di Command Query Separation, perché invita ad utilizzare il Command come un'espressione nel predicato di un `if`.
+Una funzione Command che restituisca codici di errore è una sottile violazione del principio di Command Query Separation, perché invita ad utilizzare il Command come un'espressione nel predicato di un `if`.
 
 ```java
 if (deletePage(page) == E_OK)
@@ -41,7 +41,8 @@ Qui il problema non è la confusione tra verbo ed aggettivo, ma la tendenza a cr
 ```java
 if (deletePage(page) == E_OK) {
     if (registry.deleteReference(page.name) == E_OK) {
-        if (configKeys.deleteKey(page.name.makeKey()) == E_OK){ logger.log("page deleted");
+        if (configKeys.deleteKey(page.name.makeKey()) == E_OK) {
+            logger.log("page deleted");
         } else {
             logger.log("configKey not deleted");
         }
@@ -52,18 +53,20 @@ if (deletePage(page) == E_OK) {
 }
 ```
 
-Di contro, se si usassero delle eccezion invece che dei codici di errore di ritonro, allora la gestione degli errori risulterebbe separata dal codice per l'happy case, e il codice risulterebbe più semplice:
+Al contrario, se si usassero delle eccezioni invece che dei codici di errore di ritonro, allora la gestione degli errori risulterebbe separata dal codice per l'happy case, e il codice risulterebbe più semplice:
 
 ```java
 try {
-    deletePage(page); registry.deleteReference(page.name); configKeys.deleteKey(page.name.makeKey());
+    deletePage(page);
+    registry.deleteReference(page.name);
+    configKeys.deleteKey(page.name.makeKey());
 }
 catch (Exception e) {
     logger.log(e.getMessage()); }
 ```
 
 ## Estrarre Try/Catch Blocks
-Possiamo dire a pieno titolo che anche i blocchi `Try/catch` siano brutti. Confondono la struttura del codice e mescolano la gestione dell'errore con la normale gestione dei casi di business. Perciò, è meglio estrarre il corpo dei blocchi `try` e dei blocchi  `catch` in due funzioni separate:
+Possiamo dire a pieno titolo che anche i blocchi `try/catch` siano brutti. Confondono la struttura del codice e mescolano la gestione dell'errore con la normale gestione dei casi di business. Perciò, è meglio estrarre il corpo dei blocchi `try` e dei blocchi  `catch` in due funzioni separate:
 
 ```java
 public void delete(Page page) {
@@ -86,8 +89,8 @@ private void logError(Exception e) {
 }
 ```
 
-In questo codice, la funzione `delete` si occupa solo della gestione degli errori. È facile da capire e da ignorare. La funzione `deletePageAndAllReferences` si occupa solo del processo di cancellazione della pagina. La gestione dei suoi casi di errore può essere ignorata. Questo approggio fornisce una buona separazione, che rende il codice più facile da comprendere e da modificare.
+In questo codice, la funzione `delete` si occupa solo della gestione degli errori. È facile da capire e da ignorare. La funzione `deletePageAndAllReferences` si occupa solo del processo di cancellazione della pagina. La gestione dei suoi casi di errore può essere ignorata. Questo approccio fornisce una buona separazione che rende il codice più facile da comprendere e da modificare.
 
 
 ## La gestione degli errori è una funzione a sé
-Le funzioni dovrebbero eseguire una singola cosa. La gestione degli errori è una di quelle cose. Per cui, una funzione che gestisce gli errori non dovrebbe fare nient'altro. Come nel codice riportato sopra, questo implica che se nella funzione compare la parola chiave `try`, dovrebbe essere la prima parola della funzione, e non dovrebbe comparire nient'altro nel blocco `catch/finally`.
+Le funzioni dovrebbero eseguire una singola cosa. La gestione degli errori è una di quelle cose. Per cui, una funzione che gestisce gli errori non dovrebbe fare nient'altro. Come nel codice riportato sopra, questo significa che se nella funzione compare la parola chiave `try`, dovrebbe essere la prima parola della funzione, e non dovrebbe comparire nient'altro nel blocco `catch/finally`.
