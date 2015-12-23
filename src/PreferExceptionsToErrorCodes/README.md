@@ -1,7 +1,7 @@
 [Table of Contents](../../README.md) - [Italian](README-italian.md)
 # Prefer Exceptions to Error Codes
 
-Except from [Clean Code: A Handbook of Agile Software Craftsmanship](http://www.amazon.it/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) by Robert Martin et.al.
+Excerpt from [Clean Code: A Handbook of Agile Software Craftsmanship](http://www.amazon.it/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) by Robert Martin et.al.
 
 ## Command Query Separation
 
